@@ -18,6 +18,16 @@ namespace AcCarPooling.Controllers
         }
 
         // GET api/values
+        [HttpGet]
+        public ActionResult<Journey> Get()
+        {
+            var journey = _carPoolContext.Journeys
+                .Include(j => j.Users);
+
+            return Ok(journey);
+        }
+
+        // GET api/values
         [HttpGet("{id}")]
         public ActionResult<Journey> Get(int id)
         {
