@@ -15,6 +15,7 @@ namespace AcCarPooling.Models
         public string Department { get; set; }
         public string From { get; set; }
         public string Gender { get; set; }
+        public string ContactDetails { get; set; }
         public Journey Journey { get; set; }
     }
 }

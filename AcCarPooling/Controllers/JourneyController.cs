@@ -44,6 +44,8 @@ namespace AcCarPooling.Controllers
         [HttpPut]
         public void Put([FromBody] Journey journey)
         {
+            _carPoolContext.Update(journey);
+            _carPoolContext.SaveChanges();
         }
     }
 }
