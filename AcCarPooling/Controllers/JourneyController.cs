@@ -21,10 +21,10 @@ namespace AcCarPooling.Controllers
         [HttpGet]
         public ActionResult<Journey> Get()
         {
-            var journey = _carPoolContext.Journeys
+            var journeys = _carPoolContext.Journeys
                 .Include(j => j.Users);
 
-            return Ok(journey);
+            return Ok(journeys.ToList());
         }
 
         // GET api/values

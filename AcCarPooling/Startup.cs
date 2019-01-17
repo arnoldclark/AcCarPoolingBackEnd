@@ -21,7 +21,11 @@ namespace AcCarPooling
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(x =>
+                {
+                    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             services.AddDbContext<CarPoolContext>(options => options.UseSqlServer(connectionString));
