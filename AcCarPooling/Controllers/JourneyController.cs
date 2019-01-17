@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AcCarPooling.Database;
 using AcCarPooling.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +42,71 @@ namespace AcCarPooling.Controllers
         {
             _carPoolContext.Update(journey);
             _carPoolContext.SaveChanges();
+        }
+
+        // PUT api/values/5
+        [HttpPut("AddLiftRequest")]
+        public ActionResult AddLiftRequest([FromBody] LiftRequest liftRequest)
+        {
+            if (liftRequest == null)
+                return BadRequest();
+
+            var journey = _carPoolContext.Journeys
+                .FirstOrDefault(j => j == liftRequest.Journey);
+
+            if (journey == null)
+                return NotFound("Journey Not Found");
+
+            journey.LiftRequests.Add(liftRequest);
+
+            _carPoolContext.Add(journey);
+            _carPoolContext.SaveChanges();
+
+            return Ok();
+        }
+
+        // PUT api/values/5
+        [HttpPut("RejectLiftRequest")]
+        public ActionResult RejectLiftRequest([FromBody] LiftRequest liftRequest)
+        {
+            if (liftRequest == null)
+                return BadRequest();
+
+            var journey = _carPoolContext.Journeys
+                .FirstOrDefault(j => j == liftRequest.Journey);
+
+            if (journey == null)
+                return NotFound("Journey Not Found");
+
+            if(!journey.LiftRequests.Remove(liftRequest))
+                return NotFound("Unable to remove LiftRequest from Journey");
+        
+            _carPoolContext.SaveChanges();
+
+            return Ok();
+        }
+
+        // PUT api/values/5
+        [HttpPut("AcceptLiftRequest")]
+        public ActionResult AcceptLiftRequest([FromBody] LiftRequest liftRequest)
+        {
+            if (liftRequest == null)
+                return BadRequest();
+
+            var journey = _carPoolContext.Journeys
+                .FirstOrDefault(j => j == liftRequest.Journey);
+
+            if (journey == null)
+                return NotFound("Journey Not Found");
+
+            if (!journey.LiftRequests.Remove(liftRequest))
+                return NotFound("Unable to remove LiftRequest from Journey");
+
+            journey.Users.Add(liftRequest.Passenger);
+
+            _carPoolContext.SaveChanges();
+
+            return Ok();
         }
     }
 }
