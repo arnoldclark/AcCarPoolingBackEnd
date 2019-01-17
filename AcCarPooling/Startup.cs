@@ -22,12 +22,15 @@ namespace AcCarPooling
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowFireBaseApp",
-                builder =>
-                {
-                    builder.WithOrigins("http://localhost", "https://ac-carpool.firebaseapp.com");
-                    builder.AllowAnyMethod();
-                }));
+            //services.AddCors(options => options.AddPolicy("AllowFireBaseApp",
+            //    builder =>
+            //    {
+            //        //builder.WithOrigins("http://localhost", "http://localhost:5500", "https://ac-carpool.firebaseapp.com");
+            //        builder.AllowAnyMethod();
+            //        builder.AllowAnyOrigin();
+            //    }));
+
+            services.AddCors();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -63,6 +66,13 @@ namespace AcCarPooling
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+                {
+                    //builder.WithOrigins("http://localhost", "http://localhost:5500", "https://ac-carpool.firebaseapp.com");
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
 
             app.UseMvc();
         }
