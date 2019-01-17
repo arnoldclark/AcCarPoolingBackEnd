@@ -1,4 +1,5 @@
 ﻿using AcCarPooling.Database;
+using AcCarPooling.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,14 @@ namespace AcCarPooling
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("AllowFireBaseApp",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost", "https://ac-carpool.firebaseapp.com");
+                    builder.AllowAnyMethod();
+                }));
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(x =>
                 {
@@ -29,6 +38,8 @@ namespace AcCarPooling
 
             var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             services.AddDbContext<CarPoolContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<IJourneyService, JourneyService>();
 
             services.AddSwaggerGen(c =>
             {

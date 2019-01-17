@@ -16,8 +16,7 @@ namespace AcCarPooling.Controllers
         {
             _carPoolContext = carPoolContext;
         }
-
-        // GET api/values
+        
         [HttpPost]
         public ActionResult SignUp([FromBody] User user)
         {
@@ -26,27 +25,31 @@ namespace AcCarPooling.Controllers
 
             return Ok();
         }
-
-        // GET api/values
+        
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return Ok(_carPoolContext.Users);
         }
-
-        // GET api/values/5
+        
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
             return Ok(_carPoolContext.Users.FirstOrDefault(u => u.Id == id));
         }
-
-        // PUT api/values/5
+        
         [HttpPut]
         public void Put([FromBody] User user)
         {
             _carPoolContext.Users.Update(user);
             _carPoolContext.SaveChanges();
+        }
+
+        [HttpGet("GetByEmail/{email}")]
+        public ActionResult<User> GetByEmail(string email)
+        {
+            var user = _carPoolContext.Users.FirstOrDefault(u => u.Email == email);
+            return Ok(user);
         }
     }
 }

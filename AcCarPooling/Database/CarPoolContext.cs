@@ -12,5 +12,14 @@ namespace AcCarPooling.Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<Journey> Journeys { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+
+        //    modelBuilder.Entity<User>()
+        //        .Property(j => j.JourneyId)
+        //        .IsRequired(false);
+
+        //}
     }
 }

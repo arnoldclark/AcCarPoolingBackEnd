@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using AcCarPooling.Database;
+﻿using AcCarPooling.Database;
 using AcCarPooling.Models;
+using AcCarPooling.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AcCarPooling.Controllers
 {
@@ -11,112 +10,40 @@ namespace AcCarPooling.Controllers
     public class JourneyController : ControllerBase
     {
         private readonly CarPoolContext _carPoolContext;
+        private readonly IJourneyService _journeyService;
 
-        public JourneyController(CarPoolContext carPoolContext)
+        public JourneyController(CarPoolContext carPoolContext, IJourneyService journeyService)
         {
             _carPoolContext = carPoolContext;
+            _journeyService = journeyService;
         }
-
-        // GET api/values
+        
         [HttpGet]
         public ActionResult<Journey> Get()
         {
-            var journeys = _carPoolContext.Journeys
-                .Include(j => j.Users);
+            var journeys = _journeyService.GetAllJourneys();
 
-            return Ok(journeys.ToList());
+            return Ok(journeys);
         }
 
-        // GET api/values
         [HttpGet("{id}")]
         public ActionResult<Journey> Get(int id)
         {
-            var journey = _carPoolContext.Journeys
-                .Include(j => j.Users)
-                .FirstOrDefault(x => x.Id == id);
+            var journey = _journeyService.GetJourney(id);
 
             return Ok(journey);
         }
 
-        // POST api/values
         [HttpPost]
         public void Post([FromBody] Journey journey)
         {
-            _carPoolContext.Journeys.Add(journey);
-            _carPoolContext.SaveChanges();
+            _journeyService.AddJourney(journey);
         }
 
-        // PUT api/values/5
         [HttpPut]
         public void Put([FromBody] Journey journey)
         {
-            _carPoolContext.Update(journey);
-            _carPoolContext.SaveChanges();
-        }
-
-        // PUT api/values/5
-        [HttpPut("AddLiftRequest")]
-        public ActionResult AddLiftRequest([FromBody] LiftRequest liftRequest)
-        {
-            if (liftRequest == null)
-                return BadRequest();
-
-            var journey = _carPoolContext.Journeys
-                .FirstOrDefault(j => j == liftRequest.Journey);
-
-            if (journey == null)
-                return NotFound("Journey Not Found");
-
-            journey.LiftRequests.Add(liftRequest);
-
-            _carPoolContext.Add(journey);
-            _carPoolContext.SaveChanges();
-
-            return Ok();
-        }
-
-        // PUT api/values/5
-        [HttpPut("RejectLiftRequest")]
-        public ActionResult RejectLiftRequest([FromBody] LiftRequest liftRequest)
-        {
-            if (liftRequest == null)
-                return BadRequest();
-
-            var journey = _carPoolContext.Journeys
-                .FirstOrDefault(j => j == liftRequest.Journey);
-
-            if (journey == null)
-                return NotFound("Journey Not Found");
-
-            if(!journey.LiftRequests.Remove(liftRequest))
-                return NotFound("Unable to remove LiftRequest from Journey");
-        
-            _carPoolContext.SaveChanges();
-
-            return Ok();
-        }
-
-        // PUT api/values/5
-        [HttpPut("AcceptLiftRequest")]
-        public ActionResult AcceptLiftRequest([FromBody] LiftRequest liftRequest)
-        {
-            if (liftRequest == null)
-                return BadRequest();
-
-            var journey = _carPoolContext.Journeys
-                .FirstOrDefault(j => j == liftRequest.Journey);
-
-            if (journey == null)
-                return NotFound("Journey Not Found");
-
-            if (!journey.LiftRequests.Remove(liftRequest))
-                return NotFound("Unable to remove LiftRequest from Journey");
-
-            journey.Users.Add(liftRequest.Passenger);
-
-            _carPoolContext.SaveChanges();
-
-            return Ok();
+            _journeyService.UpdateJourney(journey);
         }
     }
 }

@@ -8,8 +8,7 @@ namespace AcCarPooling.Models
     {
         public int Id { get; set; }
         public string Destination { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<User> Passengers { get; set; }
         public ICollection<LiftRequest> LiftRequests { get; set; }
-
     }
 }

@@ -4,14 +4,16 @@ using AcCarPooling.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AcCarPooling.Migrations
 {
     [DbContext(typeof(CarPoolContext))]
-    partial class CarPoolContextModelSnapshot : ModelSnapshot
+    [Migration("20190117162522_FixingRequiredJourney")]
+    partial class FixingRequiredJourney
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +63,8 @@ namespace AcCarPooling.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ContactDetails");
+
                     b.Property<string>("Department");
 
                     b.Property<string>("Email");
@@ -74,8 +78,6 @@ namespace AcCarPooling.Migrations
                     b.Property<int?>("JourneyId");
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("PhoneNumber");
 
                     b.HasKey("Id");
 
