@@ -39,7 +39,10 @@ namespace AcCarPooling
                     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
-            var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+
+            //var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            var connectionString = Configuration.GetConnectionString("car-pool-db");
             services.AddDbContext<CarPoolContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IJourneyService, JourneyService>();
