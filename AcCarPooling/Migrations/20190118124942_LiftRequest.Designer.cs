@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcCarPooling.Migrations
 {
     [DbContext(typeof(CarPoolContext))]
-    [Migration("20190117161413_AddEmailToUser")]
-    partial class AddEmailToUser
+    [Migration("20190118124942_LiftRequest")]
+    partial class LiftRequest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,19 +40,15 @@ namespace AcCarPooling.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DriverId");
+                    b.Property<int>("DriverId");
 
-                    b.Property<int?>("JourneyId");
+                    b.Property<int>("JourneyId");
 
-                    b.Property<int?>("PassengerId");
+                    b.Property<int>("PassengerId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
-
                     b.HasIndex("JourneyId");
-
-                    b.HasIndex("PassengerId");
 
                     b.ToTable("LiftRequest");
                 });
@@ -62,8 +58,6 @@ namespace AcCarPooling.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ContactDetails");
 
                     b.Property<string>("Department");
 
@@ -75,9 +69,11 @@ namespace AcCarPooling.Migrations
 
                     b.Property<bool>("IsDriver");
 
-                    b.Property<int>("JourneyId");
+                    b.Property<int?>("JourneyId");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("PhoneNumber");
 
                     b.HasKey("Id");
 
@@ -88,25 +84,17 @@ namespace AcCarPooling.Migrations
 
             modelBuilder.Entity("AcCarPooling.Models.LiftRequest", b =>
                 {
-                    b.HasOne("AcCarPooling.Models.User", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId");
-
-                    b.HasOne("AcCarPooling.Models.Journey", "Journey")
+                    b.HasOne("AcCarPooling.Models.Journey")
                         .WithMany("LiftRequests")
-                        .HasForeignKey("JourneyId");
-
-                    b.HasOne("AcCarPooling.Models.User", "Passenger")
-                        .WithMany()
-                        .HasForeignKey("PassengerId");
+                        .HasForeignKey("JourneyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AcCarPooling.Models.User", b =>
                 {
                     b.HasOne("AcCarPooling.Models.Journey", "Journey")
                         .WithMany("Passengers")
-                        .HasForeignKey("JourneyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("JourneyId");
                 });
 #pragma warning restore 612, 618
         }
