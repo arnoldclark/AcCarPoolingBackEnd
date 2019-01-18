@@ -13,14 +13,15 @@ namespace AcCarPooling.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Journey> Journeys { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
+        public DbSet<LiftRequest> LiftRequests { get; set; }
 
-        //    modelBuilder.Entity<User>()
-        //        .Property(j => j.JourneyId)
-        //        .IsRequired(false);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<LiftRequest>()
+            //    .HasOne(l => l.Passenger)
+            //    .IsRequired().OnDelete(DeleteBehavior.Restrict);
 
-        //}
+        }
 
 
     }

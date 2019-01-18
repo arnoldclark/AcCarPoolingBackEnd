@@ -1,10 +1,17 @@
-﻿namespace AcCarPooling.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AcCarPooling.Models
 {
+    [Table("LiftRequest")]
     public class LiftRequest
     {
         public int Id { get; set; }
-        public Journey Journey { get; set; }
-        public User Driver { get; set; }
-        public User Passenger { get; set; }
+        [ForeignKey("JourneyId")]
+        public int JourneyId { get; set; }
+        [ForeignKey("DriverId")]
+
+        public int DriverId { get; set; }
+        [ForeignKey("PassengerId")]
+        public int PassengerId { get; set; }
     }
 }
