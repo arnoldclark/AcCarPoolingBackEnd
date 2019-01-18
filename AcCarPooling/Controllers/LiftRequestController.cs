@@ -84,7 +84,7 @@ namespace AcCarPooling.Controllers
             if (!journey.LiftRequests.Remove(trackedLiftRequest))
                 return NotFound("Unable to remove LiftRequest from Journey");
 
-            var passenger = _carPoolContext.Users.FirstOrDefault(x => x.Id == liftRequest.PassengerId);
+            var passenger = _carPoolContext.Users.FirstOrDefault(x => x.Id == trackedLiftRequest.PassengerId);
 
             if (passenger == null)
                 return NotFound("Unable to find passenger");
@@ -100,12 +100,12 @@ namespace AcCarPooling.Controllers
             var driver = journey.Passengers.FirstOrDefault(p => p.IsDriver);
             if (driver != null)
             {
-                _nexmoSmsClient.SMS.Send(request: new SMS.SMSRequest
+                return Ok(_nexmoSmsClient.SMS.Send(request: new SMS.SMSRequest
                 {
                     @from = "Ac Car Pool",
                     to = passenger.PhoneNumber,
                     text = $"Good News, {driver.Name} has approved your lift request. Verify your journey here https://bit.ly/2Dh8KMX"
-                });
+                }));
             }
 
             return Ok();
