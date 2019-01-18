@@ -27,13 +27,13 @@ namespace AcCarPooling.Controllers
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
             return Ok(_carPoolContext.Users);
         }
         
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<User> Get(int id)
         {
             return Ok(_carPoolContext.Users.FirstOrDefault(u => u.Id == id));
         }
