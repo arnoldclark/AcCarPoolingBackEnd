@@ -1,4 +1,5 @@
-﻿using AcCarPooling.Database;
+﻿using System.Linq;
+using AcCarPooling.Database;
 using AcCarPooling.Models;
 using AcCarPooling.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace AcCarPooling.Controllers
         [HttpGet("{id}")]
         public ActionResult<Journey> Get(int id)
         {
-            var journey = _journeyService.GetJourney(id);
+            var journey = _carPoolContext.Journeys.Where(j => j.Passengers.Any(u => u.Id == id));
 
             return Ok(journey);
         }
