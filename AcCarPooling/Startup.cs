@@ -41,13 +41,13 @@ namespace AcCarPooling
                 });
 
 
-            //var client = new Client(creds: new Nexmo.Api.Request.Credentials
-            //{
-            //    ApiKey = Configuration["NEXMO-API-KEY"],
-            //    ApiSecret = Configuration["NEXMO-API-SECRET"]
-            //});
+            var client = new Client(creds: new Nexmo.Api.Request.Credentials
+            {
+                ApiKey = Configuration["NEXMO-API-KEY"],
+                ApiSecret = Configuration["NEXMO-API-SECRET"]
+            });
 
-            //services.AddSingleton(client);
+            services.AddSingleton(client);
 
 
             //var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";

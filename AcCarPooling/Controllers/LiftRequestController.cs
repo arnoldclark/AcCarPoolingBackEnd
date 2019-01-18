@@ -15,12 +15,12 @@ namespace AcCarPooling.Controllers
         private readonly CarPoolContext _carPoolContext;
         private readonly Client _nexmoSmsClient;
 
-        //public LiftRequestController(CarPoolContext carPoolContext, Client nexmoSmsClient)
-        public LiftRequestController(CarPoolContext carPoolContext)
+        public LiftRequestController(CarPoolContext carPoolContext, Client nexmoSmsClient)
+        //public LiftRequestController(CarPoolContext carPoolContext)
 
         {
             _carPoolContext = carPoolContext;
-            //_nexmoSmsClient = nexmoSmsClient;
+            _nexmoSmsClient = nexmoSmsClient;
         }
 
         [HttpPost]
@@ -97,16 +97,16 @@ namespace AcCarPooling.Controllers
             _carPoolContext.SaveChanges();
 
 
-            //var driver = journey.Passengers.FirstOrDefault(p => p.IsDriver);
-            //if(driver != null)
-            //{
-            //    _nexmoSmsClient.SMS.Send(request: new SMS.SMSRequest
-            //    {
-            //        from = "",
-            //        to = passenger.PhoneNumber,
-            //        text = $"Your lift request with {driver.Name} has been accepted."
-            //    });
-            //}
+            var driver = journey.Passengers.FirstOrDefault(p => p.IsDriver);
+            if (driver != null)
+            {
+                _nexmoSmsClient.SMS.Send(request: new SMS.SMSRequest
+                {
+                    @from = "Ac Car Pool",
+                    to = passenger.PhoneNumber,
+                    text = $"Good News, {driver.Name} has approved your lift request. Verify your journey here https://bit.ly/2Dh8KMX"
+                });
+            }
 
             return Ok();
         }
