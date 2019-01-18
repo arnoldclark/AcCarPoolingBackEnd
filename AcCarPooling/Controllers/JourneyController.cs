@@ -4,6 +4,7 @@ using AcCarPooling.Database;
 using AcCarPooling.Models;
 using AcCarPooling.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcCarPooling.Controllers
 {
@@ -31,7 +32,9 @@ namespace AcCarPooling.Controllers
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<Journey>> Get(int id)
         {
-            var journey = _carPoolContext.Journeys.Where(j => j.Passengers.Any(u => u.Id == id));
+            var journey = _carPoolContext.Journeys
+                .Include(j => j.Passengers)
+                .Where(j => j.Passengers.Any(u => u.Id == id));
 
             return Ok(journey);
         }
