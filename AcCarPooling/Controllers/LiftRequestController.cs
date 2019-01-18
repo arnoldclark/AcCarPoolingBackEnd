@@ -24,7 +24,7 @@ namespace AcCarPooling.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] LiftRequest liftRequest)
+        public ActionResult<LiftRequest> Post([FromBody] LiftRequest liftRequest)
         {
             if (liftRequest == null)
                 return BadRequest();
@@ -44,7 +44,7 @@ namespace AcCarPooling.Controllers
             
             _carPoolContext.SaveChanges();
 
-            return Ok();
+            return Ok(liftRequest);
         }
 
         [HttpDelete]
