@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AcCarPooling.Database;
 using AcCarPooling.Models;
 using AcCarPooling.Services;
@@ -28,7 +29,7 @@ namespace AcCarPooling.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Journey> Get(int id)
+        public ActionResult<IEnumerable<Journey>> Get(int id)
         {
             var journey = _carPoolContext.Journeys.Where(j => j.Passengers.Any(u => u.Id == id));
 
