@@ -2,6 +2,7 @@
 using AcCarPooling.Database;
 using AcCarPooling.Models;
 using Microsoft.AspNetCore.Mvc;
+using Nexmo.Api;
 
 namespace AcCarPooling.Controllers
 {
@@ -10,10 +11,12 @@ namespace AcCarPooling.Controllers
     public class LiftRequestController : ControllerBase
     {
         private readonly CarPoolContext _carPoolContext;
+        private readonly Client _nexmoSmsClient;
 
-        public LiftRequestController(CarPoolContext carPoolContext)
+        public LiftRequestController(CarPoolContext carPoolContext, Client nexmoSmsClient)
         {
             _carPoolContext = carPoolContext;
+            _nexmoSmsClient = nexmoSmsClient;
         }
 
         [HttpPost]
@@ -74,6 +77,18 @@ namespace AcCarPooling.Controllers
             journey.Passengers.Add(liftRequest.Passenger);
 
             _carPoolContext.SaveChanges();
+
+
+            var driver = journey.Passengers.FirstOrDefault(p => p.IsDriver);
+            if(driver != null)
+            {
+                _nexmoSmsClient.SMS.Send(request: new SMS.SMSRequest
+                {
+                    from = "",
+                    to = liftRequest.Passenger.PhoneNumber,
+                    text = $"Your lift request with {driver.Name} has been accepted."
+                });
+            }
 
             return Ok();
         }

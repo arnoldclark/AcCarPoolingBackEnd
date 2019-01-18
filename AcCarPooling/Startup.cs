@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nexmo.Api;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AcCarPooling
@@ -39,6 +40,14 @@ namespace AcCarPooling
                     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
+
+            var client = new Client(creds: new Nexmo.Api.Request.Credentials
+            {
+                ApiKey = Configuration["NEXMO-API-KEY"],
+                ApiSecret = Configuration["NEXMO-API-SECRET"]
+            });
+
+            services.AddSingleton(client);
 
 
             //var connectionString = "Server=tcp:car-pool-db.database.windows.net,1433;Initial Catalog=CarPool;Persist Security Info=False;User ID=arnold;Password=So6LK2Tn2wGJTeM3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
