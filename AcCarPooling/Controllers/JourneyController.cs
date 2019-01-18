@@ -17,7 +17,7 @@ namespace AcCarPooling.Controllers
             _carPoolContext = carPoolContext;
             _journeyService = journeyService;
         }
-        
+
         [HttpGet]
         public ActionResult<Journey> Get()
         {

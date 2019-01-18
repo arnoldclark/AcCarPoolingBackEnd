@@ -2,6 +2,8 @@
 using AcCarPooling.Database;
 using AcCarPooling.Models;
 using Microsoft.AspNetCore.Mvc;
+using Nexmo.Api;
+using SMS = Nexmo.Api.ClientMethods.SMS;
 
 namespace AcCarPooling.Controllers
 {
@@ -74,6 +76,19 @@ namespace AcCarPooling.Controllers
             journey.Passengers.Add(liftRequest.Passenger);
 
             _carPoolContext.SaveChanges();
+
+            var client = new Client(creds: new Nexmo.Api.Request.Credentials
+            {
+                ApiKey = "6109b003",
+                ApiSecret = "PwkX92rsVp5R8zUk"
+            });
+
+            client.SMS.Send(request: new Nexmo.Api.SMS.SMSRequest()
+            {
+                @from = "AC Car Pool",
+                to = liftRequest.Passenger.PhoneNumber,
+                text = $"Good News, {liftRequest.Driver.Name} has approved your lift request. Verify your journey here https://bit.ly/2Dh8KMX"
+            });
 
             return Ok();
         }
