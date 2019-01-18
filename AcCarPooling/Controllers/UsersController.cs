@@ -18,12 +18,12 @@ namespace AcCarPooling.Controllers
         }
         
         [HttpPost]
-        public ActionResult SignUp([FromBody] User user)
+        public ActionResult<User> SignUp([FromBody] User user)
         {
             _carPoolContext.Users.Add(user);
             _carPoolContext.SaveChanges();
 
-            return Ok();
+            return Ok(user);
         }
         
         [HttpGet]
